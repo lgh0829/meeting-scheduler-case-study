@@ -20,6 +20,7 @@
     --warning:#F59E0B;
     --warning-soft:#FFF6E5;
     --danger:#F04438;
+    --danger-soft:#FEECEB;
     --border:#E7E8EE;
     --shadow: 0 8px 24px rgba(23,24,28,0.06);
     --radius-l:20px;
@@ -42,6 +43,7 @@
       --warning:#F5A623;
       --warning-soft:#3A2E10;
       --danger:#FF6B61;
+      --danger-soft:#3D1B18;
       --border:#2C2D38;
       --shadow: 0 8px 24px rgba(0,0,0,0.35);
     }
@@ -60,7 +62,7 @@
   .device{
     width:100%;
     max-width:400px;
-    min-height:780px;
+    min-height:800px;
     background:var(--surface);
     border-radius:32px;
     box-shadow:var(--shadow);
@@ -71,7 +73,7 @@
   .screen{
     display:none;
     flex-direction:column;
-    min-height:780px;
+    min-height:800px;
     animation:fade .25s ease;
   }
   .screen.active{display:flex;}
@@ -81,7 +83,7 @@
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:18px 20px 8px;
+    padding:18px 20px 6px;
   }
   .back{
     width:32px;height:32px;border-radius:50%;
@@ -94,6 +96,28 @@
   }
   .step-label{font-size:13px;color:var(--text-3);font-weight:500;}
   .spacer32{width:32px;}
+
+  .role-bar{
+    display:flex;
+    gap:6px;
+    padding:8px 20px 4px;
+  }
+  .role-chip{
+    border:1px solid var(--border);
+    background:var(--surface-2);
+    color:var(--text-3);
+    font-size:12px;
+    font-weight:700;
+    padding:7px 12px;
+    border-radius:16px;
+    cursor:pointer;
+  }
+  .role-chip.on{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+  }
+  .role-chip.home{padding:7px 10px;}
 
   .content{
     flex:1;
@@ -128,8 +152,6 @@
     color:var(--text);
     outline:none;
   }
-  input[type="text"]:focus{border-color:var(--accent);}
-
   .pill-row{display:flex;gap:8px;flex-wrap:wrap;}
   .pill{
     padding:9px 14px;
@@ -145,7 +167,6 @@
     border-color:var(--accent);
     color:#fff;
   }
-
   .info-card{
     background:var(--accent-soft);
     border-radius:var(--radius-m);
@@ -155,6 +176,23 @@
     line-height:1.5;
     margin-top:20px;
   }
+
+  /* landing */
+  .role-card{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border:1.5px solid var(--border);
+    border-radius:var(--radius-m);
+    padding:18px;
+    margin-bottom:12px;
+    cursor:pointer;
+    background:var(--surface-2);
+  }
+  .role-card:hover{border-color:var(--accent);}
+  .role-card .rc-title{font-size:16px;font-weight:700;}
+  .role-card .rc-desc{font-size:12.5px;color:var(--text-2);margin-top:4px;line-height:1.45;}
+  .role-card .rc-arrow{color:var(--text-3);font-size:18px;margin-left:12px;}
 
   .attendee-row{
     display:flex;
@@ -171,6 +209,7 @@
     display:flex;align-items:center;justify-content:center;
     font-size:14px;font-weight:700;color:var(--text-2);
     border:1px solid var(--border);
+    flex-shrink:0;
   }
   .attendee-name{font-size:15px;font-weight:600;}
   .attendee-tag{font-size:12px;color:var(--text-3);margin-top:2px;}
@@ -205,7 +244,8 @@
     font-weight:700;
     cursor:pointer;
   }
-  .primary-btn:active{opacity:.85;}
+  .primary-btn:disabled{opacity:.5;cursor:default;}
+  .primary-btn:not(:disabled):active{opacity:.85;}
   .secondary-btn{
     width:100%;
     padding:14px;
@@ -223,31 +263,21 @@
     border-top:1px solid var(--border);
   }
   .link-btn{
-    background:none;border:none;color:var(--accent);font-size:13px;font-weight:600;
+    background:none;border:none;color:var(--text-3);font-size:13px;font-weight:600;
     cursor:pointer;padding:0;text-align:center;width:100%;margin-top:14px;
+    text-decoration:underline;
   }
 
-  /* Screen 3 — invitee preview frame */
-  .preview-tag{
-    display:inline-flex;align-items:center;gap:6px;
-    background:var(--warning-soft);color:var(--warning);
-    font-size:12px;font-weight:700;
-    padding:6px 10px;border-radius:8px;
-    margin-bottom:14px;
-  }
-  .phone-frame{
-    border:1px solid var(--border);
-    border-radius:18px;
-    background:var(--surface-2);
-    padding:16px;
-  }
   .invite-role-badge{
     display:inline-block;
     font-size:11px;font-weight:700;
-    padding:4px 10px;border-radius:12px;
+    padding:5px 11px;border-radius:12px;
     background:var(--accent-soft);color:var(--accent-soft-text);
-    margin-bottom:10px;
+    margin-bottom:12px;
   }
+  .invite-role-badge.optional{background:var(--success-soft);color:var(--success);}
+
+  /* week grid */
   .week-grid{
     display:grid;
     grid-template-columns:32px repeat(5,1fr);
@@ -261,19 +291,21 @@
     font-size:9px;color:var(--text-3);display:flex;align-items:center;justify-content:flex-end;padding-right:4px;
   }
   .cell{
-    height:20px;
+    height:22px;
     border-radius:4px;
-    background:var(--surface);
+    background:var(--surface-2);
     border:1px solid var(--border);
     cursor:pointer;
   }
   .cell.avoid{background:var(--danger);border-color:var(--danger);opacity:.75;}
-  .cell.outtrip{background:var(--warning);border-color:var(--warning);opacity:.8;}
-  .legend{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;}
-  .legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-2);}
-  .legend-dot{width:9px;height:9px;border-radius:3px;}
+  .cell.work{background:var(--warning);border-color:var(--warning);opacity:.8;cursor:default;}
+  .legend-stack{display:grid;gap:10px;margin-top:14px;}
+  .legend-row{display:flex;align-items:flex-start;gap:8px;}
+  .legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;margin-top:3px;}
+  .legend-text{font-size:12px;color:var(--text-2);line-height:1.45;}
+  .legend-text b{color:var(--text);}
 
-  /* Screen 4 — response status */
+  /* response status */
   .status-group-label{font-size:12px;font-weight:700;color:var(--text-3);margin:18px 0 8px;text-transform:uppercase;letter-spacing:.4px;}
   .status-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);}
   .status-row:last-child{border-bottom:none;}
@@ -281,7 +313,15 @@
   .status-chip.done{background:var(--success-soft);color:var(--success);}
   .status-chip.pending{background:var(--surface-2);color:var(--text-3);}
 
-  /* Screen 5 — candidates (core) */
+  /* candidates */
+  .sort-note{
+    font-size:12px;color:var(--text-3);line-height:1.5;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:var(--radius-s);
+    padding:10px 12px;
+    margin-bottom:14px;
+  }
   .candidate-card{
     border:1.5px solid var(--border);
     border-radius:var(--radius-m);
@@ -299,20 +339,22 @@
     background:var(--accent);color:#fff;font-size:11px;font-weight:700;
     padding:4px 8px;border-radius:8px;
   }
-  .cand-stat-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+  .cand-stat-row{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
   .stat-pill{
-    display:flex;align-items:center;gap:5px;
-    font-size:12px;font-weight:700;
-    padding:6px 10px;border-radius:10px;
+    display:flex;align-items:center;gap:4px;
+    font-size:11.5px;font-weight:700;
+    padding:6px 9px;border-radius:10px;
   }
   .stat-pill.req{background:var(--success-soft);color:var(--success);}
+  .stat-pill.pref-ok{background:var(--accent-soft);color:var(--accent-soft-text);}
+  .stat-pill.pref-warn{background:var(--warning-soft);color:var(--warning);}
   .stat-pill.opt-full{background:var(--success-soft);color:var(--success);}
   .stat-pill.opt-partial{background:var(--warning-soft);color:var(--warning);}
   .empty-toggle{
     text-align:center;font-size:12px;color:var(--text-3);
     margin-top:18px;text-decoration:underline;cursor:pointer;
   }
-  .empty-state{text-align:center;padding:40px 10px 10px;}
+  .empty-state{text-align:center;padding:36px 10px 10px;}
   .empty-emoji{font-size:40px;margin-bottom:14px;}
   .empty-title{font-size:16px;font-weight:700;margin-bottom:6px;}
   .empty-desc{font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:20px;}
@@ -320,35 +362,36 @@
     display:flex;align-items:center;justify-content:space-between;
     border:1px solid var(--border);border-radius:var(--radius-m);
     padding:14px;text-align:left;margin-bottom:10px;
+    gap:10px;
   }
   .relax-card .rc-name{font-size:13px;font-weight:600;}
-  .relax-card .rc-desc{font-size:12px;color:var(--text-3);margin-top:2px;}
+  .relax-card .rc-desc{font-size:12px;color:var(--text-3);margin-top:2px;line-height:1.4;}
   .relax-btn{
     background:var(--accent-soft);color:var(--accent-soft-text);
-    border:none;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;
+    border:none;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;
+    flex-shrink:0;
   }
 
-  /* Screen 6 — confirm */
+  /* confirm */
   .confirm-summary{
     background:var(--surface-2);
     border-radius:var(--radius-m);
     padding:18px;
     margin:16px 0;
   }
-  .cs-row{display:flex;justify-content:space-between;padding:8px 0;font-size:14px;}
-  .cs-row .k{color:var(--text-3);}
-  .cs-row .v{font-weight:600;}
+  .cs-row{display:flex;justify-content:space-between;padding:8px 0;font-size:14px;gap:12px;}
+  .cs-row .k{color:var(--text-3);flex-shrink:0;}
+  .cs-row .v{font-weight:600;text-align:right;}
   .avatar-stack{display:flex;margin-top:6px;}
   .avatar-stack .avatar{width:26px;height:26px;font-size:11px;margin-left:-8px;border:2px solid var(--surface-2);background:var(--surface);}
   .avatar-stack .avatar:first-child{margin-left:0;}
-  .avatar.faded{opacity:.4;}
 
-  /* Screen 7 — done */
+  /* done / notification */
   .done-icon{
     width:64px;height:64px;border-radius:50%;
     background:var(--success-soft);color:var(--success);
     display:flex;align-items:center;justify-content:center;
-    font-size:30px;margin:30px auto 18px;
+    font-size:30px;margin:26px auto 18px;
   }
   .msg-bubble{
     border-radius:var(--radius-m);
@@ -361,15 +404,65 @@
   .msg-bubble .who{font-size:11px;font-weight:700;color:var(--text-3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.3px;}
   .msg-bubble.req-msg{background:var(--surface-2);}
   .msg-bubble.opt-msg{background:var(--accent-soft);color:var(--accent-soft-text);}
+  .notice-card{
+    border:1px solid var(--border);
+    background:var(--surface-2);
+    border-radius:var(--radius-m);
+    padding:16px;
+    font-size:13px;
+    line-height:1.55;
+    color:var(--text-2);
+    margin-top:14px;
+  }
+  .notice-card b{color:var(--text);}
 </style>
 </head>
 <body>
 
 <div class="device">
 
-  <!-- Screen 1: 회의 만들기 -->
-  <div class="screen active" id="s1">
-    <div class="topbar"><span class="spacer32"></span><span class="step-label">1 / 7</span><span class="spacer32"></span></div>
+  <!-- s0: 역할 선택 -->
+  <div class="screen active" id="s0">
+    <div class="content" style="padding-top:36px;">
+      <h1 class="title">모두에게 괜찮은 시간,<br>어떻게 찾을까</h1>
+      <p class="subtitle">참석의 무게에 따라 화면이 어떻게 달라지는지, 세 입장에서 확인해보세요.</p>
+
+      <div class="role-card" onclick="go('o1')">
+        <div>
+          <div class="rc-title">주최자</div>
+          <div class="rc-desc">회의를 만들고, 참석의 무게를 정하고, 후보 중에서 확정합니다</div>
+        </div>
+        <div class="rc-arrow">›</div>
+      </div>
+      <div class="role-card" onclick="go('r1')">
+        <div>
+          <div class="rc-title">필수 참석자</div>
+          <div class="rc-desc">이서연 님의 화면. 이 사람의 업무 일정이 후보를 결정합니다</div>
+        </div>
+        <div class="rc-arrow">›</div>
+      </div>
+      <div class="role-card" onclick="go('p1')">
+        <div>
+          <div class="rc-title">선택 참석자</div>
+          <div class="rc-desc">정하늘 님의 화면. 응답하지 않아도 회의는 진행됩니다</div>
+        </div>
+        <div class="rc-arrow">›</div>
+      </div>
+
+      <div class="info-card">필수 참석자의 업무 일정은 후보를 거르고, 나머지 조건은 우선순위 신호로만 쓰입니다.</div>
+    </div>
+  </div>
+
+  <!-- ══════════ 주최자 ══════════ -->
+
+  <!-- o1: 회의 만들기 -->
+  <div class="screen" id="o1">
+    <div class="topbar"><button class="back" onclick="go('s0')">‹</button><span class="step-label">주최자 · 1/6</span><span class="spacer32"></span></div>
+    <div class="role-bar">
+      <button class="role-chip on" onclick="go('o1')">주최자</button>
+      <button class="role-chip" onclick="go('r1')">필수 참석자</button>
+      <button class="role-chip" onclick="go('p1')">선택 참석자</button>
+    </div>
     <div class="content">
       <h1 class="title">새 회의 만들기</h1>
       <p class="subtitle">동료들과 회의 시간을 조율해 볼게요.</p>
@@ -382,80 +475,60 @@
 
       <div class="field-label">언제까지 확정할까요?</div>
       <div class="pill-row"><span class="pill selected">다음 주 안에</span></div>
-
-      <div class="info-card">6명의 참석자를 등록하면, 각자의 제약을 반영한 회의 시간을 자동으로 찾아드려요.</div>
     </div>
-    <div class="footer"><button class="primary-btn" onclick="go('s2')">참석자 등록하기</button></div>
+    <div class="footer"><button class="primary-btn" onclick="go('o2')">참석자 등록하기</button></div>
   </div>
 
-  <!-- Screen 2: 참석자 등록 -->
-  <div class="screen" id="s2">
-    <div class="topbar"><button class="back" onclick="go('s1')">‹</button><span class="step-label">2 / 7</span><span class="spacer32"></span></div>
+  <!-- o2: 참석자 등록 -->
+  <div class="screen" id="o2">
+    <div class="topbar"><button class="back" onclick="go('o1')">‹</button><span class="step-label">주최자 · 2/6</span><span class="spacer32"></span></div>
+    <div class="role-bar">
+      <button class="role-chip on" onclick="go('o1')">주최자</button>
+      <button class="role-chip" onclick="go('r1')">필수 참석자</button>
+      <button class="role-chip" onclick="go('p1')">선택 참석자</button>
+    </div>
     <div class="content">
-      <h1 class="title">참석자를 등록해 주세요</h1>
+      <h1 class="title">참석의 무게를 정해주세요</h1>
       <p class="subtitle">꼭 필요한 사람은 <b>필수</b>, 있으면 좋은 사람은 <b>선택</b>으로 구분해 주세요.</p>
 
-      <div id="attendee-list">
-        <div class="attendee-row">
-          <div class="attendee-left"><div class="avatar">김</div><div><div class="attendee-name">김도윤</div><div class="attendee-tag">기획</div></div></div>
-          <div class="toggle-req"><button class="on-required">필수</button><button>선택</button></div>
-        </div>
-        <div class="attendee-row">
-          <div class="attendee-left"><div class="avatar">이</div><div><div class="attendee-name">이서연</div><div class="attendee-tag">개발</div></div></div>
-          <div class="toggle-req"><button class="on-required">필수</button><button>선택</button></div>
-        </div>
-        <div class="attendee-row">
-          <div class="attendee-left"><div class="avatar">박</div><div><div class="attendee-name">박지훈</div><div class="attendee-tag">개발</div></div></div>
-          <div class="toggle-req"><button class="on-required">필수</button><button>선택</button></div>
-        </div>
-        <div class="attendee-row">
-          <div class="attendee-left"><div class="avatar">최</div><div><div class="attendee-name">최민서</div><div class="attendee-tag">디자인</div></div></div>
-          <div class="toggle-req"><button class="on-required">필수</button><button>선택</button></div>
-        </div>
-        <div class="attendee-row">
-          <div class="attendee-left"><div class="avatar">정</div><div><div class="attendee-name">정하늘</div><div class="attendee-tag">마케팅</div></div></div>
-          <div class="toggle-req"><button onclick="toggleReq(this)">필수</button><button class="on-optional" onclick="toggleReq(this)">선택</button></div>
-        </div>
-        <div class="attendee-row">
-          <div class="attendee-left"><div class="avatar">한</div><div><div class="attendee-name">한유진</div><div class="attendee-tag">데이터</div></div></div>
-          <div class="toggle-req"><button onclick="toggleReq(this)">필수</button><button class="on-optional" onclick="toggleReq(this)">선택</button></div>
-        </div>
+      <div class="attendee-row">
+        <div class="attendee-left"><div class="avatar">김</div><div><div class="attendee-name">김도윤</div><div class="attendee-tag">기획</div></div></div>
+        <div class="toggle-req"><button class="on-required">필수</button><button>선택</button></div>
       </div>
-      <div class="info-card">필수 참석자 전원이 가능한 시간만 후보로 올라가요. 선택 참석자는 가능한 인원 수로 참고만 해요.</div>
+      <div class="attendee-row">
+        <div class="attendee-left"><div class="avatar">이</div><div><div class="attendee-name">이서연</div><div class="attendee-tag">개발</div></div></div>
+        <div class="toggle-req"><button class="on-required">필수</button><button>선택</button></div>
+      </div>
+      <div class="attendee-row">
+        <div class="attendee-left"><div class="avatar">박</div><div><div class="attendee-name">박지훈</div><div class="attendee-tag">개발</div></div></div>
+        <div class="toggle-req"><button class="on-required">필수</button><button>선택</button></div>
+      </div>
+      <div class="attendee-row">
+        <div class="attendee-left"><div class="avatar">최</div><div><div class="attendee-name">최민서</div><div class="attendee-tag">디자인</div></div></div>
+        <div class="toggle-req"><button class="on-required">필수</button><button>선택</button></div>
+      </div>
+      <div class="attendee-row">
+        <div class="attendee-left"><div class="avatar">정</div><div><div class="attendee-name">정하늘</div><div class="attendee-tag">마케팅</div></div></div>
+        <div class="toggle-req"><button onclick="toggleReq(this)">필수</button><button class="on-optional" onclick="toggleReq(this)">선택</button></div>
+      </div>
+      <div class="attendee-row">
+        <div class="attendee-left"><div class="avatar">한</div><div><div class="attendee-name">한유진</div><div class="attendee-tag">데이터</div></div></div>
+        <div class="toggle-req"><button onclick="toggleReq(this)">필수</button><button class="on-optional" onclick="toggleReq(this)">선택</button></div>
+      </div>
+
+      <div class="info-card">필수 참석자의 업무 일정은 후보를 거르는 기준이 되고, 선택 참석자의 일정은 우선순위에 반영돼요.</div>
     </div>
-    <div class="footer"><button class="primary-btn" onclick="go('s3')">초대 링크 보내기</button></div>
+    <div class="footer"><button class="primary-btn" onclick="go('o3')">초대 링크 보내기</button></div>
   </div>
 
-  <!-- Screen 3: 참석자가 보는 화면 (미리보기) -->
-  <div class="screen" id="s3">
-    <div class="topbar"><button class="back" onclick="go('s2')">‹</button><span class="step-label">3 / 7</span><span class="spacer32"></span></div>
-    <div class="content">
-      <div class="preview-tag">👀 참석자 화면 미리보기</div>
-      <h1 class="title">이서연 님이 보는 화면</h1>
-      <p class="subtitle">참석자는 링크를 열어 자신의 제약을 표시해요.</p>
-
-      <div class="phone-frame">
-        <div class="invite-role-badge">필수 참석자로 초대됨</div>
-        <div style="font-size:14px;font-weight:700;">스프린트 리뷰 · 1시간</div>
-        <div style="font-size:12px;color:var(--text-2);margin-top:2px;">불가능한 시간대를 눌러 표시해 주세요</div>
-
-        <div class="week-grid" id="week-grid">
-          <div class="head"></div>
-          <div class="head">월</div><div class="head">화</div><div class="head">수</div><div class="head">목</div><div class="head">금</div>
-        </div>
-
-        <div class="legend">
-          <div class="legend-item"><span class="legend-dot" style="background:var(--danger)"></span>회피 시간</div>
-          <div class="legend-item"><span class="legend-dot" style="background:var(--warning)"></span>외근</div>
-        </div>
-      </div>
+  <!-- o3: 응답 현황 -->
+  <div class="screen" id="o3">
+    <div class="topbar"><button class="back" onclick="go('o2')">‹</button><span class="step-label">주최자 · 3/6</span><span class="spacer32"></span></div>
+    <div class="role-bar">
+      <button class="role-chip on" onclick="go('o1')">주최자</button>
+      <button class="role-chip" onclick="go('r1')">필수 참석자</button>
+      <button class="role-chip" onclick="go('p1')">선택 참석자</button>
     </div>
-    <div class="footer"><button class="primary-btn" onclick="go('s4')">응답 현황 보기</button></div>
-  </div>
-
-  <!-- Screen 4: 응답 현황 -->
-  <div class="screen" id="s4">
-    <div class="topbar"><button class="back" onclick="go('s3')">‹</button><span class="step-label">4 / 7</span><span class="spacer32"></span></div>
     <div class="content">
       <h1 class="title">응답 현황</h1>
       <p class="subtitle">필수 참석자 전원이 응답하면 후보 시간을 찾아드려요.</p>
@@ -470,84 +543,107 @@
       <div class="status-row"><div class="attendee-left"><div class="avatar">정</div><span class="attendee-name">정하늘</span></div><span class="status-chip done">완료</span></div>
       <div class="status-row"><div class="attendee-left"><div class="avatar">한</div><span class="attendee-name">한유진</span></div><span class="status-chip pending">미응답</span></div>
 
-      <div class="info-card">선택 참석자가 응답하지 않아도 후보 시간 탐색은 계속 진행돼요.</div>
+      <div class="info-card">선택 참석자가 응답하지 않아도 필수 참석자의 응답만 모이면 후보를 찾아드려요.</div>
     </div>
-    <div class="footer"><button class="primary-btn" onclick="go('s5')">후보 시간 확인하기</button></div>
+    <div class="footer"><button class="primary-btn" onclick="go('o4')">후보 시간 확인하기</button></div>
   </div>
 
-  <!-- Screen 5: 후보 시간 리스트 (핵심) -->
-  <div class="screen" id="s5">
-    <div class="topbar"><button class="back" onclick="go('s4')">‹</button><span class="step-label">5 / 7</span><span class="spacer32"></span></div>
-    <div class="content" id="s5-content">
+  <!-- o4: 후보 시간 리스트 -->
+  <div class="screen" id="o4">
+    <div class="topbar"><button class="back" onclick="go('o3')">‹</button><span class="step-label">주최자 · 4/6</span><span class="spacer32"></span></div>
+    <div class="role-bar">
+      <button class="role-chip on" onclick="go('o1')">주최자</button>
+      <button class="role-chip" onclick="go('r1')">필수 참석자</button>
+      <button class="role-chip" onclick="go('p1')">선택 참석자</button>
+    </div>
+    <div class="content">
       <h1 class="title">가능한 시간이에요</h1>
-      <p class="subtitle">필수 참석자는 모두 가능한 시간이에요. 선택 참석자 인원도 함께 보여드려요.</p>
+      <p class="subtitle">필수 참석자의 업무 일정과 겹치는 시간은 이미 제외했어요.</p>
 
-      <div class="candidate-card best" onclick="selectCandidate(this)">
-        <div class="cand-top">
-          <div><div class="cand-date">7월 15일 (수)</div><div class="cand-time">오전 10:00 – 11:00</div></div>
-          <span class="best-badge">추천</span>
+      <div id="o4-list">
+        <div class="sort-note">1순위 신호(필수 참석자의 회피 시간, 선택 참석자의 참석 가능 인원)를 많이 만족하는 시간부터 보여드려요.</div>
+
+        <div class="candidate-card best" data-date="7월 15일 (수)" data-time="오전 10:00 – 11:00" data-pref="회피 겹침 0건" data-opt="2/2 가능" onclick="selectCandidate(this)">
+          <div class="cand-top">
+            <div><div class="cand-date">7월 15일 (수)</div><div class="cand-time">오전 10:00 – 11:00</div></div>
+            <span class="best-badge">추천</span>
+          </div>
+          <div class="cand-stat-row">
+            <span class="stat-pill req">✓ 필수 4/4 가능</span>
+            <span class="stat-pill pref-ok">회피 겹침 0건</span>
+            <span class="stat-pill opt-full">선택 2/2 가능</span>
+          </div>
         </div>
-        <div class="cand-stat-row">
-          <span class="stat-pill req">✓ 필수 4/4 가능</span>
-          <span class="stat-pill opt-full">선택 2/2 가능</span>
+
+        <div class="candidate-card" data-date="7월 16일 (목)" data-time="오후 3:00 – 4:00" data-pref="회피 겹침 0건" data-opt="1/2 가능" onclick="selectCandidate(this)">
+          <div class="cand-top">
+            <div><div class="cand-date">7월 16일 (목)</div><div class="cand-time">오후 3:00 – 4:00</div></div>
+          </div>
+          <div class="cand-stat-row">
+            <span class="stat-pill req">✓ 필수 4/4 가능</span>
+            <span class="stat-pill pref-ok">회피 겹침 0건</span>
+            <span class="stat-pill opt-partial">선택 1/2 가능</span>
+          </div>
         </div>
+
+        <div class="candidate-card" data-date="7월 17일 (금)" data-time="오후 1:00 – 2:00" data-pref="회피 겹침 1건 (이서연)" data-opt="1/2 가능" onclick="selectCandidate(this)">
+          <div class="cand-top">
+            <div><div class="cand-date">7월 17일 (금)</div><div class="cand-time">오후 1:00 – 2:00</div></div>
+          </div>
+          <div class="cand-stat-row">
+            <span class="stat-pill req">✓ 필수 4/4 가능</span>
+            <span class="stat-pill pref-warn">회피 겹침 1건 (이서연)</span>
+            <span class="stat-pill opt-partial">선택 1/2 가능</span>
+          </div>
+        </div>
+
+        <div class="empty-toggle" onclick="showEmptyState()">예시: 필수 참석자의 업무 일정만으로 겹치는 시간이 없다면?</div>
       </div>
-
-      <div class="candidate-card" onclick="selectCandidate(this)">
-        <div class="cand-top">
-          <div><div class="cand-date">7월 16일 (목)</div><div class="cand-time">오후 3:00 – 4:00</div></div>
-        </div>
-        <div class="cand-stat-row">
-          <span class="stat-pill req">✓ 필수 4/4 가능</span>
-          <span class="stat-pill opt-partial">선택 1/2 가능</span>
-        </div>
-      </div>
-
-      <div class="candidate-card" onclick="selectCandidate(this)">
-        <div class="cand-top">
-          <div><div class="cand-date">7월 17일 (금)</div><div class="cand-time">오후 4:00 – 5:00</div></div>
-        </div>
-        <div class="cand-stat-row">
-          <span class="stat-pill req">✓ 필수 4/4 가능</span>
-          <span class="stat-pill opt-partial">선택 0/2 가능</span>
-        </div>
-      </div>
-
-      <div class="empty-toggle" onclick="showEmptyState()">예시: 후보 시간이 하나도 없다면?</div>
     </div>
-    <div class="footer"><button class="primary-btn" id="s5-cta" onclick="go('s6')" disabled>시간을 선택해 주세요</button></div>
+    <div class="footer"><button class="primary-btn" id="o4-cta" onclick="go('o5')" disabled>시간을 선택해 주세요</button></div>
   </div>
 
-  <!-- Screen 6: 확정 -->
-  <div class="screen" id="s6">
-    <div class="topbar"><button class="back" onclick="go('s5')">‹</button><span class="step-label">6 / 7</span><span class="spacer32"></span></div>
+  <!-- o5: 확정 -->
+  <div class="screen" id="o5">
+    <div class="topbar"><button class="back" onclick="go('o4')">‹</button><span class="step-label">주최자 · 5/6</span><span class="spacer32"></span></div>
+    <div class="role-bar">
+      <button class="role-chip on" onclick="go('o1')">주최자</button>
+      <button class="role-chip" onclick="go('r1')">필수 참석자</button>
+      <button class="role-chip" onclick="go('p1')">선택 참석자</button>
+    </div>
     <div class="content">
       <h1 class="title">이 시간으로 확정할까요?</h1>
       <p class="subtitle">확정하면 참석자 전원에게 자동으로 알려드려요.</p>
 
       <div class="confirm-summary">
         <div class="cs-row"><span class="k">회의</span><span class="v">스프린트 리뷰</span></div>
-        <div class="cs-row"><span class="k">일시</span><span class="v" id="confirm-time">7월 15일 (수) 오전 10:00–11:00</span></div>
+        <div class="cs-row"><span class="k">일시</span><span class="v" id="confirm-time">7월 15일 (수) 오전 10:00 – 11:00</span></div>
         <div class="cs-row"><span class="k">필수 참석자</span><span class="v">4/4 전원 가능</span></div>
         <div class="avatar-stack">
           <div class="avatar">김</div><div class="avatar">이</div><div class="avatar">박</div><div class="avatar">최</div>
         </div>
-        <div class="cs-row" style="margin-top:8px;"><span class="k">선택 참석자</span><span class="v" id="confirm-opt">2/2 가능</span></div>
-        <div class="avatar-stack" id="confirm-opt-avatars">
+        <div class="cs-row" style="margin-top:8px;"><span class="k">회피 시간</span><span class="v" id="confirm-pref">겹침 0건</span></div>
+        <div class="cs-row"><span class="k">선택 참석자</span><span class="v" id="confirm-opt">2/2 가능</span></div>
+        <div class="avatar-stack">
           <div class="avatar">정</div><div class="avatar">한</div>
         </div>
       </div>
     </div>
-    <div class="footer"><button class="primary-btn" onclick="go('s7')">확정하기</button></div>
+    <div class="footer"><button class="primary-btn" onclick="go('o6')">확정하기</button></div>
   </div>
 
-  <!-- Screen 7: 완료 -->
-  <div class="screen" id="s7">
-    <div class="topbar"><span class="spacer32"></span><span class="step-label">7 / 7</span><span class="spacer32"></span></div>
+  <!-- o6: 완료 -->
+  <div class="screen" id="o6">
+    <div class="topbar"><span class="spacer32"></span><span class="step-label">주최자 · 6/6</span><span class="spacer32"></span></div>
+    <div class="role-bar">
+      <button class="role-chip on" onclick="go('o1')">주최자</button>
+      <button class="role-chip" onclick="go('r1')">필수 참석자</button>
+      <button class="role-chip" onclick="go('p1')">선택 참석자</button>
+    </div>
     <div class="content">
       <div class="done-icon">✓</div>
       <h1 class="title" style="text-align:center;">회의가 확정됐어요</h1>
-      <p class="subtitle" style="text-align:center;">참석자 유형에 맞춰 서로 다른 메시지가 전송돼요.</p>
+      <p class="subtitle" style="text-align:center;">참석의 무게에 맞춰 서로 다른 메시지가 전송돼요.</p>
 
       <div class="msg-bubble req-msg">
         <div class="who">필수 참석자에게</div>
@@ -558,7 +654,157 @@
         "7/15(수) 10:00 스프린트 리뷰가 확정됐어요. 참석이 어려우면 빠지셔도 괜찮아요 🙂"
       </div>
     </div>
-    <div class="footer"><button class="secondary-btn" onclick="go('s1')">처음으로</button></div>
+    <div class="footer"><button class="secondary-btn" onclick="go('s0')">처음으로</button></div>
+  </div>
+
+  <!-- ══════════ 필수 참석자 (이서연) ══════════ -->
+
+  <!-- r1: 초대 수신 -->
+  <div class="screen" id="r1">
+    <div class="topbar"><button class="back" onclick="go('s0')">‹</button><span class="step-label">필수 참석자 · 1/3</span><span class="spacer32"></span></div>
+    <div class="role-bar">
+      <button class="role-chip" onclick="go('o1')">주최자</button>
+      <button class="role-chip on" onclick="go('r1')">필수 참석자</button>
+      <button class="role-chip" onclick="go('p1')">선택 참석자</button>
+    </div>
+    <div class="content">
+      <div class="invite-role-badge">필수 참석자로 초대됨</div>
+      <h1 class="title">스프린트 리뷰 · 1시간</h1>
+      <p class="subtitle">김도윤 님이 회의를 열었어요. 서연 님은 꼭 참석해야 하는 멤버라, 서연 님의 일정이 후보 시간을 결정해요.</p>
+
+      <div class="notice-card">
+        <b>서연 님의 일정이 이렇게 쓰여요</b><br>
+        업무 일정과 겹치는 시간은 후보에서 제외되고, 피하고 싶은 시간은 가능하면 피해서 잡아드려요.
+      </div>
+    </div>
+    <div class="footer"><button class="primary-btn" onclick="go('r2')">내 일정 알려주기</button></div>
+  </div>
+
+  <!-- r2: 제약 입력 -->
+  <div class="screen" id="r2">
+    <div class="topbar"><button class="back" onclick="go('r1')">‹</button><span class="step-label">필수 참석자 · 2/3</span><span class="spacer32"></span></div>
+    <div class="role-bar">
+      <button class="role-chip" onclick="go('o1')">주최자</button>
+      <button class="role-chip on" onclick="go('r1')">필수 참석자</button>
+      <button class="role-chip" onclick="go('p1')">선택 참석자</button>
+    </div>
+    <div class="content">
+      <h1 class="title">피하고 싶은 시간을 눌러주세요</h1>
+      <p class="subtitle">업무 일정은 캘린더에서 자동으로 가져왔어요.</p>
+
+      <div class="week-grid" id="grid-r"></div>
+
+      <div class="legend-stack">
+        <div class="legend-row">
+          <span class="legend-dot" style="background:var(--warning)"></span>
+          <span class="legend-text"><b>업무 일정</b> (외근, 다른 회의) · 이 시간은 후보에서 제외돼요</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-dot" style="background:var(--danger)"></span>
+          <span class="legend-text"><b>피하고 싶은 시간</b> · 가능하면 피해서 잡아드려요.</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><button class="primary-btn" onclick="go('r3')">이대로 제출하기</button></div>
+  </div>
+
+  <!-- r3: 확정 통보 -->
+  <div class="screen" id="r3">
+    <div class="topbar"><span class="spacer32"></span><span class="step-label">필수 참석자 · 3/3</span><span class="spacer32"></span></div>
+    <div class="role-bar">
+      <button class="role-chip" onclick="go('o1')">주최자</button>
+      <button class="role-chip on" onclick="go('r1')">필수 참석자</button>
+      <button class="role-chip" onclick="go('p1')">선택 참석자</button>
+    </div>
+    <div class="content">
+      <div class="done-icon">✓</div>
+      <h1 class="title" style="text-align:center;">7월 15일 (수) 오전 10:00<br>회의가 확정됐어요</h1>
+      <p class="subtitle" style="text-align:center;">제출이 끝나면, 주최자가 확정했을 때 이렇게 알려드려요.</p>
+
+      <div class="notice-card">
+        <b>서연 님의 조건이 반영됐어요</b><br>
+        피하고 싶다고 표시한 시간(점심 직후)을 피해서 잡았어요. 캘린더에 자동으로 추가됐어요.
+      </div>
+    </div>
+    <div class="footer"><button class="secondary-btn" onclick="go('s0')">처음으로</button></div>
+  </div>
+
+  <!-- ══════════ 선택 참석자 (정하늘) ══════════ -->
+
+  <!-- p1: 초대 수신 -->
+  <div class="screen" id="p1">
+    <div class="topbar"><button class="back" onclick="go('s0')">‹</button><span class="step-label">선택 참석자 · 1/3</span><span class="spacer32"></span></div>
+    <div class="role-bar">
+      <button class="role-chip" onclick="go('o1')">주최자</button>
+      <button class="role-chip" onclick="go('r1')">필수 참석자</button>
+      <button class="role-chip on" onclick="go('p1')">선택 참석자</button>
+    </div>
+    <div class="content">
+      <div class="invite-role-badge optional">선택 참석자로 초대됨</div>
+      <h1 class="title">스프린트 리뷰 · 1시간</h1>
+      <p class="subtitle">김도윤 님이 회의를 열었어요. 참석하면 좋지만, 어려우면 빠져도 괜찮은 자리예요.</p>
+
+      <div class="notice-card">
+        <b>부담 갖지 않으셔도 돼요</b><br>
+        응답하지 않아도 회의는 진행돼요. 일정을 알려주시면 하늘 님이 참석할 수 있는 시간이 우선 제안돼요.
+      </div>
+    </div>
+    <div class="footer">
+      <button class="primary-btn" onclick="go('p2')">가능한 시간 알려주기</button>
+      <button class="link-btn" onclick="go('p3')">건너뛰기</button>
+    </div>
+  </div>
+
+  <!-- p2: 제약 입력 -->
+  <div class="screen" id="p2">
+    <div class="topbar"><button class="back" onclick="go('p1')">‹</button><span class="step-label">선택 참석자 · 2/3</span><span class="spacer32"></span></div>
+    <div class="role-bar">
+      <button class="role-chip" onclick="go('o1')">주최자</button>
+      <button class="role-chip" onclick="go('r1')">필수 참석자</button>
+      <button class="role-chip on" onclick="go('p1')">선택 참석자</button>
+    </div>
+    <div class="content">
+      <h1 class="title">피하고 싶은 시간을 눌러주세요</h1>
+      <p class="subtitle">업무 일정은 캘린더에서 자동으로 가져왔어요.</p>
+
+      <div class="week-grid" id="grid-p"></div>
+
+      <div class="legend-stack">
+        <div class="legend-row">
+          <span class="legend-dot" style="background:var(--warning)"></span>
+          <span class="legend-text"><b>업무 일정</b> (외근, 다른 회의) · 하늘 님이 참석 가능한 시간이 많을수록 그 시간대가 우선 제안돼요</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-dot" style="background:var(--danger)"></span>
+          <span class="legend-text"><b>피하고 싶은 시간</b> · 후보가 비슷할 때 참고돼요</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <button class="primary-btn" onclick="go('p3')">제출하기</button>
+      <button class="link-btn" onclick="go('p3')">건너뛰기</button>
+    </div>
+  </div>
+
+  <!-- p3: 확정 통보 -->
+  <div class="screen" id="p3">
+    <div class="topbar"><span class="spacer32"></span><span class="step-label">선택 참석자 · 3/3</span><span class="spacer32"></span></div>
+    <div class="role-bar">
+      <button class="role-chip" onclick="go('o1')">주최자</button>
+      <button class="role-chip" onclick="go('r1')">필수 참석자</button>
+      <button class="role-chip on" onclick="go('p1')">선택 참석자</button>
+    </div>
+    <div class="content">
+      <div class="done-icon">✓</div>
+      <h1 class="title" style="text-align:center;">7월 15일 (수) 오전 10:00<br>회의가 확정됐어요</h1>
+      <p class="subtitle" style="text-align:center;">응답하지 않았어도, 확정되면 이렇게 알려드려요.</p>
+
+      <div class="notice-card">
+        <b>참석이 어려우면 빠지셔도 괜찮아요 🙂</b><br>
+        하늘 님은 선택 참석자예요. 참석 여부를 회신하지 않아도 회의는 그대로 진행돼요.
+      </div>
+    </div>
+    <div class="footer"><button class="secondary-btn" onclick="go('s0')">처음으로</button></div>
   </div>
 
 </div>
@@ -567,6 +813,7 @@
   function go(id){
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
+    document.querySelector('.device').scrollTop = 0;
   }
 
   function toggleReq(btn){
@@ -576,14 +823,18 @@
     else { btn.classList.add('on-optional'); }
   }
 
-  // build week grid cells (attendee constraint preview)
-  (function(){
-    const grid = document.getElementById('week-grid');
+  // week grid builder: work cells are fixed (calendar), clicking toggles avoid
+  function buildGrid(el, work, avoid){
+    const grid = document.getElementById(el);
     const hours = ['9','11','13','15','17'];
-    const preset = {
-      '2-1':'avoid','2-2':'avoid','2-3':'avoid','2-4':'avoid','2-5':'avoid',
-      '1-2':'outtrip','1-4':'outtrip'
-    };
+    grid.innerHTML = '';
+    const headRow = ['','월','화','수','목','금'];
+    headRow.forEach(h=>{
+      const d = document.createElement('div');
+      d.className='head';
+      d.textContent = h;
+      grid.appendChild(d);
+    });
     hours.forEach((h,ri)=>{
       const label = document.createElement('div');
       label.className='hour-label';
@@ -593,45 +844,68 @@
         const cell = document.createElement('div');
         cell.className='cell';
         const key = ri+'-'+ci;
-        if(preset[key]) cell.classList.add(preset[key]);
-        cell.onclick = ()=>{ cell.classList.toggle('avoid'); };
+        if(work.includes(key)){
+          cell.classList.add('work');
+        } else {
+          if(avoid.includes(key)) cell.classList.add('avoid');
+          cell.onclick = ()=>{ cell.classList.toggle('avoid'); };
+        }
         grid.appendChild(cell);
       }
     });
-  })();
+  }
 
-  let selectedCard = null;
+  // 이서연(필수): 화요일 외근 전일 + 목 15시 다른 회의 / 회피: 점심 직후 13시
+  buildGrid('grid-r',
+    ['0-2','1-2','2-2','3-2','4-2','3-4'],
+    ['2-1','2-3','2-4','2-5']
+  );
+  // 정하늘(선택): 수 오전 외근 / 회피: 월·금 17시
+  buildGrid('grid-p',
+    ['0-3','1-3'],
+    ['4-1','4-5']
+  );
+
+  // candidate selection
   function selectCandidate(card){
     document.querySelectorAll('.candidate-card').forEach(c=>c.classList.remove('selected'));
     card.classList.add('selected');
-    selectedCard = card;
-    document.getElementById('s5-cta').disabled = false;
-    document.getElementById('s5-cta').textContent = '이 시간으로 확정하기';
-
-    const date = card.querySelector('.cand-date').textContent;
-    const time = card.querySelector('.cand-time').textContent;
-    document.getElementById('confirm-time').textContent = date + ' ' + time;
-
-    const optPill = card.querySelector('.stat-pill:nth-child(2)').textContent.replace('선택 ','').replace(' 가능','');
-    document.getElementById('confirm-opt').textContent = optPill + ' 가능';
+    const cta = document.getElementById('o4-cta');
+    cta.disabled = false;
+    cta.textContent = '이 시간으로 확정하기';
+    document.getElementById('confirm-time').textContent = card.dataset.date + ' ' + card.dataset.time;
+    document.getElementById('confirm-pref').textContent = card.dataset.pref.replace('회피 ','');
+    document.getElementById('confirm-opt').textContent = card.dataset.opt;
   }
 
+  // empty state (원인: 필수 참석자의 업무 일정)
+  let savedCandidates = null;
   function showEmptyState(){
-    document.getElementById('s5-content').innerHTML = `
+    const list = document.getElementById('o4-list');
+    savedCandidates = list.innerHTML;
+    document.getElementById('o4-cta').disabled = true;
+    document.getElementById('o4-cta').textContent = '시간을 선택해 주세요';
+    list.innerHTML = `
       <div class="empty-state">
         <div class="empty-emoji">🔍</div>
-        <div class="empty-title">필수 참석자 전원이 가능한 시간이 없어요</div>
-        <div class="empty-desc">조건을 하나 완화하면 후보를 다시 찾아드릴게요.</div>
+        <div class="empty-title">필수 참석자의 업무 일정만으로<br>겹치는 시간이 없어요</div>
+        <div class="empty-desc">다음 주 안에는 네 분의 일정이 모두 비는 1시간이 없어요. 조건을 조정하면 다시 찾아드릴게요.</div>
       </div>
       <div class="relax-card">
-        <div><div class="rc-name">이서연 님의 회피 시간대</div><div class="rc-desc">13:00–14:00 (점심 직후)</div></div>
-        <button class="relax-btn" onclick="go('s5')">완화하고 재탐색</button>
+        <div><div class="rc-name">탐색 기간을 하루 늘리기</div><div class="rc-desc">다다음 주 월요일까지 범위를 넓혀서 다시 찾아요</div></div>
+        <button class="relax-btn" onclick="restoreCandidates()">재탐색</button>
       </div>
       <div class="relax-card">
-        <div><div class="rc-name">박지훈 님의 외근 요일</div><div class="rc-desc">화요일</div></div>
-        <button class="relax-btn" onclick="go('s5')">완화하고 재탐색</button>
+        <div><div class="rc-name">박지훈 님을 선택 참석으로 조정</div><div class="rc-desc">참석의 무게를 바꾸면 후보를 거르는 기준이 줄어요</div></div>
+        <button class="relax-btn" onclick="restoreCandidates()">재탐색</button>
       </div>
     `;
+  }
+  function restoreCandidates(){
+    if(savedCandidates){
+      document.getElementById('o4-list').innerHTML = savedCandidates;
+      savedCandidates = null;
+    }
   }
 </script>
 </body>
