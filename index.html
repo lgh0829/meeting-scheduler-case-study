@@ -276,6 +276,33 @@
     margin-bottom:12px;
   }
   .invite-role-badge.optional{background:var(--success-soft);color:var(--success);}
+  .me-badge{
+    display:inline-block;
+    font-size:10px;font-weight:700;
+    padding:2px 7px;border-radius:8px;
+    background:var(--accent);color:#fff;
+    margin-left:6px;
+    vertical-align:2px;
+  }
+  .add-attendee{
+    width:100%;
+    padding:13px;
+    margin-top:12px;
+    border-radius:var(--radius-m);
+    border:1.5px dashed var(--border);
+    background:transparent;
+    color:var(--text-2);
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .add-attendee:hover{border-color:var(--accent);color:var(--accent);}
+  .wait-icon{
+    width:64px;height:64px;border-radius:50%;
+    background:var(--accent-soft);
+    display:flex;align-items:center;justify-content:center;
+    font-size:28px;margin:26px auto 18px;
+  }
 
   /* week grid */
   .week-grid{
@@ -488,11 +515,11 @@
       <button class="role-chip" onclick="go('p1')">선택 참석자</button>
     </div>
     <div class="content">
-      <h1 class="title">참석의 무게를 정해주세요</h1>
+      <h1 class="title">참석자를 등록해주세요</h1>
       <p class="subtitle">꼭 필요한 사람은 <b>필수</b>, 있으면 좋은 사람은 <b>선택</b>으로 구분해 주세요.</p>
 
       <div class="attendee-row">
-        <div class="attendee-left"><div class="avatar">김</div><div><div class="attendee-name">김도윤</div><div class="attendee-tag">기획</div></div></div>
+        <div class="attendee-left"><div class="avatar">김</div><div><div class="attendee-name">김도윤<span class="me-badge">나</span></div><div class="attendee-tag">기획 · 주최자</div></div></div>
         <div class="toggle-req"><button class="on-required">필수</button><button>선택</button></div>
       </div>
       <div class="attendee-row">
@@ -515,6 +542,8 @@
         <div class="attendee-left"><div class="avatar">한</div><div><div class="attendee-name">한유진</div><div class="attendee-tag">데이터</div></div></div>
         <div class="toggle-req"><button onclick="toggleReq(this)">필수</button><button class="on-optional" onclick="toggleReq(this)">선택</button></div>
       </div>
+
+      <button class="add-attendee">+ 참석자 추가하기</button>
 
       <div class="info-card">필수 참석자의 업무 일정은 후보를 거르는 기준이 되고, 선택 참석자의 일정은 우선순위에 반영돼요.</div>
     </div>
@@ -661,7 +690,7 @@
 
   <!-- r1: 초대 수신 -->
   <div class="screen" id="r1">
-    <div class="topbar"><button class="back" onclick="go('s0')">‹</button><span class="step-label">필수 참석자 · 1/3</span><span class="spacer32"></span></div>
+    <div class="topbar"><button class="back" onclick="go('s0')">‹</button><span class="step-label">필수 참석자 · 1/4</span><span class="spacer32"></span></div>
     <div class="role-bar">
       <button class="role-chip" onclick="go('o1')">주최자</button>
       <button class="role-chip on" onclick="go('r1')">필수 참석자</button>
@@ -682,7 +711,7 @@
 
   <!-- r2: 제약 입력 -->
   <div class="screen" id="r2">
-    <div class="topbar"><button class="back" onclick="go('r1')">‹</button><span class="step-label">필수 참석자 · 2/3</span><span class="spacer32"></span></div>
+    <div class="topbar"><button class="back" onclick="go('r1')">‹</button><span class="step-label">필수 참석자 · 2/4</span><span class="spacer32"></span></div>
     <div class="role-bar">
       <button class="role-chip" onclick="go('o1')">주최자</button>
       <button class="role-chip on" onclick="go('r1')">필수 참석자</button>
@@ -707,10 +736,32 @@
     </div>
     <div class="footer"><button class="primary-btn" onclick="go('r3')">이대로 제출하기</button></div>
   </div>
+  <!-- r2 제출 → r3 대기 -->
 
-  <!-- r3: 확정 통보 -->
+  <!-- r3: 제출 완료 · 확정 대기 -->
   <div class="screen" id="r3">
-    <div class="topbar"><span class="spacer32"></span><span class="step-label">필수 참석자 · 3/3</span><span class="spacer32"></span></div>
+    <div class="topbar"><span class="spacer32"></span><span class="step-label">필수 참석자 · 3/4</span><span class="spacer32"></span></div>
+    <div class="role-bar">
+      <button class="role-chip" onclick="go('o1')">주최자</button>
+      <button class="role-chip on" onclick="go('r1')">필수 참석자</button>
+      <button class="role-chip" onclick="go('p1')">선택 참석자</button>
+    </div>
+    <div class="content">
+      <div class="wait-icon">⏳</div>
+      <h1 class="title" style="text-align:center;">알려주셔서 감사해요</h1>
+      <p class="subtitle" style="text-align:center;">서연 님의 일정을 잘 받았어요. 주최자가 회의 시간을 확정하면 바로 알려드릴게요.</p>
+
+      <div class="notice-card">
+        <b>지금은 주최자의 확정을 기다리고 있어요</b><br>
+        업무 일정과 피하고 싶은 시간이 후보 탐색에 반영됐어요.
+      </div>
+    </div>
+    <div class="footer"><button class="primary-btn" onclick="go('r4')">확정 알림 보기</button></div>
+  </div>
+
+  <!-- r4: 확정 통보 -->
+  <div class="screen" id="r4">
+    <div class="topbar"><span class="spacer32"></span><span class="step-label">필수 참석자 · 4/4</span><span class="spacer32"></span></div>
     <div class="role-bar">
       <button class="role-chip" onclick="go('o1')">주최자</button>
       <button class="role-chip on" onclick="go('r1')">필수 참석자</button>
@@ -719,7 +770,7 @@
     <div class="content">
       <div class="done-icon">✓</div>
       <h1 class="title" style="text-align:center;">7월 15일 (수) 오전 10:00<br>회의가 확정됐어요</h1>
-      <p class="subtitle" style="text-align:center;">제출이 끝나면, 주최자가 확정했을 때 이렇게 알려드려요.</p>
+      <p class="subtitle" style="text-align:center;">주최자가 회의 시간을 확정했어요.</p>
 
       <div class="notice-card">
         <b>서연 님의 조건이 반영됐어요</b><br>
@@ -733,7 +784,7 @@
 
   <!-- p1: 초대 수신 -->
   <div class="screen" id="p1">
-    <div class="topbar"><button class="back" onclick="go('s0')">‹</button><span class="step-label">선택 참석자 · 1/3</span><span class="spacer32"></span></div>
+    <div class="topbar"><button class="back" onclick="go('s0')">‹</button><span class="step-label">선택 참석자 · 1/4</span><span class="spacer32"></span></div>
     <div class="role-bar">
       <button class="role-chip" onclick="go('o1')">주최자</button>
       <button class="role-chip" onclick="go('r1')">필수 참석자</button>
@@ -751,13 +802,13 @@
     </div>
     <div class="footer">
       <button class="primary-btn" onclick="go('p2')">가능한 시간 알려주기</button>
-      <button class="link-btn" onclick="go('p3')">건너뛰기</button>
+      <button class="link-btn" onclick="go('p4')">건너뛰기</button>
     </div>
   </div>
 
   <!-- p2: 제약 입력 -->
   <div class="screen" id="p2">
-    <div class="topbar"><button class="back" onclick="go('p1')">‹</button><span class="step-label">선택 참석자 · 2/3</span><span class="spacer32"></span></div>
+    <div class="topbar"><button class="back" onclick="go('p1')">‹</button><span class="step-label">선택 참석자 · 2/4</span><span class="spacer32"></span></div>
     <div class="role-bar">
       <button class="role-chip" onclick="go('o1')">주최자</button>
       <button class="role-chip" onclick="go('r1')">필수 참석자</button>
@@ -782,13 +833,34 @@
     </div>
     <div class="footer">
       <button class="primary-btn" onclick="go('p3')">제출하기</button>
-      <button class="link-btn" onclick="go('p3')">건너뛰기</button>
+      <button class="link-btn" onclick="go('p4')">건너뛰기</button>
     </div>
   </div>
 
-  <!-- p3: 확정 통보 -->
+  <!-- p3: 제출 완료 · 확정 대기 -->
   <div class="screen" id="p3">
-    <div class="topbar"><span class="spacer32"></span><span class="step-label">선택 참석자 · 3/3</span><span class="spacer32"></span></div>
+    <div class="topbar"><span class="spacer32"></span><span class="step-label">선택 참석자 · 3/4</span><span class="spacer32"></span></div>
+    <div class="role-bar">
+      <button class="role-chip" onclick="go('o1')">주최자</button>
+      <button class="role-chip" onclick="go('r1')">필수 참석자</button>
+      <button class="role-chip on" onclick="go('p1')">선택 참석자</button>
+    </div>
+    <div class="content">
+      <div class="wait-icon">⏳</div>
+      <h1 class="title" style="text-align:center;">알려주셔서 감사해요</h1>
+      <p class="subtitle" style="text-align:center;">하늘 님의 일정을 잘 받았어요. 주최자가 회의 시간을 확정하면 바로 알려드릴게요.</p>
+
+      <div class="notice-card">
+        <b>지금은 주최자의 확정을 기다리고 있어요</b><br>
+        하늘 님이 참석할 수 있는 시간이 우선 제안되도록 반영했어요.
+      </div>
+    </div>
+    <div class="footer"><button class="primary-btn" onclick="go('p4')">확정 알림 보기</button></div>
+  </div>
+
+  <!-- p4: 확정 통보 -->
+  <div class="screen" id="p4">
+    <div class="topbar"><span class="spacer32"></span><span class="step-label">선택 참석자 · 4/4</span><span class="spacer32"></span></div>
     <div class="role-bar">
       <button class="role-chip" onclick="go('o1')">주최자</button>
       <button class="role-chip" onclick="go('r1')">필수 참석자</button>
@@ -797,7 +869,7 @@
     <div class="content">
       <div class="done-icon">✓</div>
       <h1 class="title" style="text-align:center;">7월 15일 (수) 오전 10:00<br>회의가 확정됐어요</h1>
-      <p class="subtitle" style="text-align:center;">응답하지 않았어도, 확정되면 이렇게 알려드려요.</p>
+      <p class="subtitle" style="text-align:center;">주최자가 회의 시간을 확정했어요.</p>
 
       <div class="notice-card">
         <b>참석이 어려우면 빠지셔도 괜찮아요 🙂</b><br>
